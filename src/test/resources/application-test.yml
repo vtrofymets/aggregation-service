@@ -1,0 +1,36 @@
+app:
+  data-sources:
+    - name: db1
+      url: jdbc:tc:postgresql:16:///${app.data-sources[0].name}
+      user: test
+      password: test
+      table: users
+      mapping:
+        id: user_id
+        username: login
+        name: first_name
+        surname: last_name
+      migration:
+        enabled: true
+    - name: db2
+      url: jdbc:tc:postgresql:16:///${app.data-sources[1].name}
+      user: test
+      password: test
+      table: user_table
+      mapping:
+        id: id
+        username: login
+        name: name
+        surname: surname
+      migration:
+        enabled: true
+  #  - name: db3
+  #    url: jdbc:postgresql://localhost:5433/${data-sources[1].name}
+  #    user: postgres
+  #    password: postgres
+  #    table: user_table
+  #    mapping:
+  #      id: login
+  #      username: login
+  #      name: name
+  #      surname: surname

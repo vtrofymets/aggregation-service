@@ -1,0 +1,62 @@
+services:
+  aggregation-service:
+    image: aggregation-service:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: default
+      DB1_URL: jdbc:postgresql://db1/db1
+      DB1_USER: postgres
+      DB1_PASSWORD: postgres
+      DB2_URL: jdbc:postgresql://db2/db2
+      DB2_USER: postgres
+      DB2_PASSWORD: postgres
+      DB3_URL: jdbc:postgresql://db3/db3
+      DB3_USER: postgres
+      DB3_PASSWORD: postgres
+    networks:
+      - aggregation-network
+    depends_on:
+      - db1
+      - db2
+      - db3
+  db1:
+    image: harbor.avalaunch.aval/docker-hub-proxy/postgres:16
+    environment:
+      POSTGRES_DB: "db1"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+    ports:
+      - "5454:5432"
+    networks:
+      - aggregation-network
+  db2:
+    image: harbor.avalaunch.aval/docker-hub-proxy/postgres:16
+    environment:
+      POSTGRES_DB: "db2"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+    ports:
+      - "5445:5432"
+    networks:
+      - aggregation-network
+  db3:
+    image: harbor.avalaunch.aval/docker-hub-proxy/postgres:16
+    environment:
+      POSTGRES_DB: "db3"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+    ports:
+      - "5544:5432"
+    volumes:
+      - ./db-init/db3/init_db.sql:/docker-entrypoint-initdb.d/init_db.sql
+      - db3-data:/var/lib/postgresql/data
+    networks:
+      - aggregation-network
+networks:
+  aggregation-network:
+volumes:
+  db3-data:

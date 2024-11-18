@@ -1,0 +1,75 @@
+server:
+  port: 8080
+  shutdown: graceful
+
+spring:
+  application:
+    name: aggregation-service
+  flyway:
+    enabled: false
+  jackson:
+    default-property-inclusion: non_null
+
+management:
+  endpoint:
+    health:
+      show-details: always
+      show-components: always
+      probes:
+        enabled: true
+      group:
+        readiness:
+          include:
+            - readinessState
+        liveness:
+          include:
+            - livenessState
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+        exclude:
+          - 'heapdump'
+          - 'threaddump'
+  info:
+    git:
+      mode: simple
+
+app:
+  data-sources:
+    - name: db1
+      url: ${DB1_URL}
+      user: ${DB1_USER}
+      password: ${DB1_PASSWORD}
+      table: users
+      mapping:
+        id: user_id
+        username: login
+        name: first_name
+        surname: last_name
+      migration:
+        enabled: true
+    - name: db2
+      url: ${DB2_URL}
+      user: ${DB2_USER}
+      password: ${DB2_PASSWORD}
+      table: user_table
+      mapping:
+        id: login
+        username: login
+        name: name
+        surname: surname
+      migration:
+        enabled: true
+    - name: db3
+      url: ${DB3_URL}
+      user: ${DB3_USER}
+      password: ${DB3_PASSWORD}
+      table: customers
+      mapping:
+        id: id
+        username: email
+        name: first_name
+        surname: last_name
+      migration:
+        enabled: false
