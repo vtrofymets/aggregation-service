@@ -19,7 +19,7 @@ public class UsersRestController implements UsersApi {
 
     @Override
     public List<UserResponseDto> receiveUsers(String id, String username, String name, String surname) {
-        var users = usersAggregationService.findUsers(new UsersAggregationService.UsersFilterParams(id, username, name, surname));
+        var users = usersAggregationService.findUsers(UsersAggregationService.UsersFilterParams.of(id, username, name, surname));
         log.info("users = {}", users);
         return usersMapper.map(users);
     }

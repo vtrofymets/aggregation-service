@@ -24,13 +24,3 @@ app:
         surname: surname
       migration:
         enabled: true
-  #  - name: db3
-  #    url: jdbc:postgresql://localhost:5433/${data-sources[1].name}
-  #    user: postgres
-  #    password: postgres
-  #    table: user_table
-  #    mapping:
-  #      id: login
-  #      username: login
-  #      name: name
-  #      surname: surname
