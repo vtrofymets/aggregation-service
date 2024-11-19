@@ -3,7 +3,7 @@
 Service provide single endpoint **'/users'** to extract data from multi tenant. Tenants properties declarate in **'/aggregation-service/application.yml'** file.
 
 ## How to run
-Download project, move to ../aggregation-service folder and run command in terminal **'docker compose up -d'**.
+Download project, move to ../aggregation-service folder and run command in terminal **'docker compose up -d'**. <br>
 After service start, call GET: http://localhost:8080/users, http://localhost:8080/users, http://localhost:8080/users?username=login1, http://localhost:8080/users?username=login1&name=name1, http://localhost:8080/users?username=123@22.com
 
 ## Technologies:
