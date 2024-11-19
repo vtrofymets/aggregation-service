@@ -24,7 +24,7 @@ services:
       - db2
       - db3
   db1:
-    image: harbor.avalaunch.aval/docker-hub-proxy/postgres:16
+    image: postgres:16
     environment:
       POSTGRES_DB: "db1"
       POSTGRES_USER: "postgres"
@@ -34,7 +34,7 @@ services:
     networks:
       - aggregation-network
   db2:
-    image: harbor.avalaunch.aval/docker-hub-proxy/postgres:16
+    image: postgres:16
     environment:
       POSTGRES_DB: "db2"
       POSTGRES_USER: "postgres"
@@ -44,7 +44,7 @@ services:
     networks:
       - aggregation-network
   db3:
-    image: harbor.avalaunch.aval/docker-hub-proxy/postgres:16
+    image: postgres:16
     environment:
       POSTGRES_DB: "db3"
       POSTGRES_USER: "postgres"
