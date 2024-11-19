@@ -62,7 +62,7 @@ public class UsersAggregationServiceImpl implements UsersAggregationService {
 
     private static List<User> handleException(List<User> users, Throwable ex) {
         if (ex != null) {
-            log.error("While trying receive users get error: [{}]", ex.getMessage(), ex);
+            log.warn("While trying receive users get error: [{}]", ex.getMessage(), ex);
             return null;
         }
         return users;
