@@ -5,7 +5,7 @@ Service provide single endpoint **'/users'** to extract data from multi tenant. 
 ## How to run
 Download project, move to ../aggregation-service folder and run command in terminal **'docker compose up -d'**.
 
-Technologies:
+## Technologies:
   - Java 21
   - Maven
   - Spring Boot 3+ (Web, Jdbc, Actuator, Validation, Test)
