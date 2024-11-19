@@ -1,0 +1,82 @@
+openapi: 3.0.1
+info:
+  title: Aggregation Service API
+  description: Service provided aggregation data from multiple databases.
+  version: 1.0.0
+tags:
+  - name: users
+paths:
+  /users:
+    get:
+      description: Retrieve all available users.
+      tags:
+        - users
+      operationId: receiveUsers
+      parameters:
+        - in: query
+          name: id
+          schema:
+            type: string
+          required: false
+          description: Get users by id.
+        - in: query
+          name: username
+          schema:
+            type: string
+          required: false
+          description: Get users by username.
+        - in: query
+          name: name
+          schema:
+            type: string
+          required: false
+          description: Get users by name.
+        - in: query
+          name: surname
+          schema:
+            type: string
+          required: false
+          description: Get users by surname.
+      responses:
+        '200':
+          description: List of users.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserResponseDto'
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+components:
+  schemas:
+    UserResponseDto:
+      type: object
+      properties:
+        id:
+          type: string
+          description: "System user identifier."
+          example: "12345qwerty"
+        username:
+          type: string
+          description: "System user name."
+          example: "test_user"
+        name:
+          type: string
+          description: "User name."
+          example: "Jack"
+        surname:
+          type: string
+          description: "User surname."
+          example: "Sparrow"
+    ErrorResponseDto:
+      type: object
+      properties:
+        errorCode:
+          type: string
+        errorMessage:
+          type: string
