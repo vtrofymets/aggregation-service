@@ -40,7 +40,7 @@ public class UserDataExtractorImpl implements DataExtractor<User> {
 
     @Override
     public List<User> findWithParams(@NonNull Map<String, String> parameters) {
-        log.info("parameters: {}", parameters);
+        log.info("tenant: {}, parameters: {}", tenant, parameters);
 
         if (!parameters.isEmpty()) {
             var queryParameters = parameters.entrySet()
@@ -56,7 +56,7 @@ public class UserDataExtractorImpl implements DataExtractor<User> {
 
             var query = selectAll + queryParameters;
 
-            log.info("query: {}", query);
+            log.info("tenant: {}, query: {}", tenant, query);
 
             return jdbcTemplate.query(query, rowMapper);
         }
@@ -80,8 +80,13 @@ public class UserDataExtractorImpl implements DataExtractor<User> {
     }
 
     @Override
-    public JdbcTemplate repository() {
+    public JdbcTemplate jdbcTemplate() {
         return this.jdbcTemplate;
+    }
+
+    @Override
+    public NamedParameterJdbcTemplate namedParameterJdbcTemplate() {
+        return this.namedParameterJdbcTemplate;
     }
 
     @Override
