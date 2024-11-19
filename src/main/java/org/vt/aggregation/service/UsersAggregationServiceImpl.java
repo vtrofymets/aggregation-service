@@ -2,7 +2,6 @@ package org.vt.aggregation.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.stereotype.Service;
 import org.vt.aggregation.domain.User;
 import org.vt.aggregation.providers.ParametersConverterProvider;
@@ -34,15 +33,15 @@ public class UsersAggregationServiceImpl implements UsersAggregationService {
     }
 
     private List<User> findUsers() {
-        return receiveUsers(extractor -> supplyAsync(() -> Pair.of(extractor.tenant(), extractor.findAll())));
+        return receiveUsers(extractor -> supplyAsync(extractor::findAll));
     }
 
     private List<User> findUsersWithParams(UsersFilterParams params) {
         var parameters = parametersConverterProvider.convert(params);
-        return receiveUsers(extractor -> supplyAsync(() -> Pair.of(extractor.tenant(), extractor.findWithParams(parameters))));
+        return receiveUsers(extractor -> supplyAsync(() -> extractor.findWithParams(parameters)));
     }
 
-    private List<User> receiveUsers(Function<DataExtractor<User>, CompletableFuture<Pair<String, List<User>>>> function) {
+    private List<User> receiveUsers(Function<DataExtractor<User>, CompletableFuture<List<User>>> function) {
         var futures = userDataExtractors.stream()
                 .map(function)
                 .map(future -> future.handle(UsersAggregationServiceImpl::handleException))
@@ -61,12 +60,12 @@ public class UsersAggregationServiceImpl implements UsersAggregationService {
         return users;
     }
 
-    private static List<User> handleException(Pair<String, List<User>> pair, Throwable ex) {
+    private static List<User> handleException(List<User> users, Throwable ex) {
         if (ex != null) {
-            log.error("For tenant: {} get error: [{}]", pair.getLeft(), ex.getMessage(), ex);
+            log.error("While trying receive users get error: [{}]", ex.getMessage(), ex);
             return null;
         }
-        return pair.getRight();
+        return users;
     }
 
 }
