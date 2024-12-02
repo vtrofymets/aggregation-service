@@ -38,6 +38,7 @@ management:
 app:
   data-sources:
     - name: db1
+      strategy: postgres
       url: ${DB1_URL}
       user: ${DB1_USER}
       password: ${DB1_PASSWORD}
@@ -47,9 +48,12 @@ app:
         username: login
         name: first_name
         surname: last_name
+      health:
+        test-query: 'SELECT 1'
       migration:
         enabled: true
     - name: db2
+      strategy: postgres
       url: ${DB2_URL}
       user: ${DB2_USER}
       password: ${DB2_PASSWORD}
@@ -59,9 +63,12 @@ app:
         username: login
         name: name
         surname: surname
+      health:
+        test-query: 'SELECT 1'
       migration:
         enabled: true
     - name: db3
+      strategy: postgres
       url: ${DB3_URL}
       user: ${DB3_USER}
       password: ${DB3_PASSWORD}
@@ -71,5 +78,3 @@ app:
         username: email
         name: first_name
         surname: last_name
-      migration:
-        enabled: false

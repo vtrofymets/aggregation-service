@@ -12,13 +12,24 @@ import java.util.Map;
 @ConfigurationProperties("app")
 public record DataSourcesSettings(List<DataSourceProperties> dataSources) {
 
-    public record DataSourceProperties(@NotNull @NotBlank String name, @NotNull @NotBlank String url, String user, String password, @NotNull @NotBlank String table, @NotNull Map<String, String> mapping, @NotNull MigrationProperties migration) {
+    public record DataSourceProperties(@NotNull @NotBlank String name,
+                                       @NotNull @NotBlank String strategy,
+                                       @NotNull @NotBlank String url,
+                                       @NotNull @NotBlank String user,
+                                       @NotNull @NotBlank String password,
+                                       @NotNull @NotBlank String table,
+                                       @NotNull Map<String, String> mapping,
+                                       HealthProperties health,
+                                       MigrationProperties migration) {
     }
 
     //    public record MappingProperties(String id, String username, String name, String surname) {
     //    }
 
     public record MigrationProperties(boolean enabled) {
+    }
+
+    public record HealthProperties(@NotNull @NotBlank String testQuery) {
     }
 
 }

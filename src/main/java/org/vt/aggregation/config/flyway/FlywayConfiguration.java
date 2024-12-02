@@ -4,9 +4,9 @@ import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.flywaydb.core.Flyway;
 import org.flywaydb.core.api.MigrationVersion;
-import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Configuration;
-import org.vt.aggregation.config.database.DataSourcesSettings;
+import org.vt.aggregation.config.context.AggregationContext;
+import org.vt.aggregation.config.context.DataSourceContext;
 
 import java.util.Optional;
 
@@ -14,22 +14,18 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class FlywayConfiguration {
 
-    private final DataSourcesSettings dataSourcesSettings;
+    private final AggregationContext aggregationContext;
 
     @PostConstruct
     public void init() {
-        dataSourcesSettings.dataSources()
+        aggregationContext.dataSourcesContexts()
                 .stream()
-                .filter(dataSourceProperties -> Optional.ofNullable(dataSourceProperties.migration())
-                        .filter(DataSourcesSettings.MigrationProperties::enabled)
+                .filter(dataSourceProperties -> Optional.ofNullable(dataSourceProperties.migrate())
+                        .filter(DataSourceContext.Migrate::isEnabled)
                         .isPresent())
                 .map(dataSourceProperties -> Flyway.configure()
-                        .dataSource(DataSourceBuilder.create()
-                                .url(dataSourceProperties.url())
-                                .username(dataSourceProperties.user())
-                                .password(dataSourceProperties.password())
-                                .build())
-                        .locations("classpath:db/migration/postgres/" + dataSourceProperties.name())
+                        .dataSource(dataSourceProperties.dataSource())
+                        .locations("classpath:db/migration/".concat(dataSourceProperties.database()).concat("/").concat(dataSourceProperties.tenant()))
                         .target(MigrationVersion.LATEST)
                         .baselineOnMigrate(true)
                         .cleanDisabled(false)
