@@ -3,6 +3,7 @@ package org.vt.aggregation.config.context;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.vt.aggregation.config.database.DataSourcesSettings;
 
@@ -61,6 +62,7 @@ public record DataSourceContext(String tenant,
     @RequiredArgsConstructor
     @Builder
     @Getter
+    @ToString
     public static class HealthCheck {
 
         private final String testQuery;

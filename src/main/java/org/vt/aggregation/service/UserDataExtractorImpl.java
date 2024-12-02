@@ -60,7 +60,7 @@ public class UserDataExtractorImpl implements DataExtractor<User> {
 
             log.info("tenant: {}, query: {}", tenant, query);
 
-            return jdbcTemplate.query(query, rowMapper);
+            return jdbcTemplate.query(query, rowMapper());
         }
 
         return findAll();
@@ -68,7 +68,7 @@ public class UserDataExtractorImpl implements DataExtractor<User> {
 
     @Override
     public List<User> findAll() {
-        return this.jdbcTemplate.query(selectAll, this.rowMapper);
+        return this.jdbcTemplate.query(selectAll, rowMapper());
     }
 
     @Override

@@ -13,6 +13,8 @@ app:
         surname: last_name
       migration:
         enabled: true
+      health:
+        test-query: 'SELECT 1'
     - name: db2
       strategy: postgres
       url: jdbc:tc:postgresql:16:///${app.data-sources[1].name}
@@ -26,3 +28,5 @@ app:
         surname: surname
       migration:
         enabled: true
+      health:
+        test-query: 'SELECT 1'

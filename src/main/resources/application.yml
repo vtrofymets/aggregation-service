@@ -9,6 +9,8 @@ spring:
     enabled: false
   jackson:
     default-property-inclusion: non_null
+    visibility:
+      field: any
 
 management:
   endpoint:
