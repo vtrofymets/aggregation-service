@@ -62,7 +62,6 @@ public record DataSourceContext(String tenant,
     @RequiredArgsConstructor
     @Builder
     @Getter
-    @ToString
     public static class HealthCheck {
 
         private final String testQuery;
