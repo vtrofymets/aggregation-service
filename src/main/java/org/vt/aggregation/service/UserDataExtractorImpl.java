@@ -6,15 +6,13 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.vt.aggregation.config.database.DataSourcesSettings;
+import org.vt.aggregation.config.context.DataSourceContext;
 import org.vt.aggregation.domain.User;
 
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
-import static org.vt.aggregation.utils.JdbcTemplateUtils.buildJdbcTemplate;
 
 @Slf4j
 public class UserDataExtractorImpl implements DataExtractor<User> {
@@ -27,15 +25,19 @@ public class UserDataExtractorImpl implements DataExtractor<User> {
     private final Map<String, String> mapping;
     private final String selectAll;
 
-    private UserDataExtractorImpl(DataSourcesSettings.DataSourceProperties dataSourceProperties) {
-        this.tenant = dataSourceProperties.name();
-        this.table = dataSourceProperties.table();
-        this.jdbcTemplate = buildJdbcTemplate(dataSourceProperties);
+    private UserDataExtractorImpl(DataSourceContext dataSourceContext) {
+        this.tenant = dataSourceContext.tenant();
+        this.table = dataSourceContext.table();
+        this.jdbcTemplate = new JdbcTemplate(dataSourceContext.dataSource());
         this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(jdbcTemplate);
-        this.mapping = dataSourceProperties.mapping();
+        this.mapping = dataSourceContext.mapping();
         this.rowMapper = buildRowMapper(mapping);
         this.selectAll = new LinkedHashSet<>(mapping.values()).stream()
                 .collect(Collectors.joining(", ", "SELECT ", " FROM " + table));
+    }
+
+    public static DataExtractor<User> create(@NonNull DataSourceContext dataSourceContexts) {
+        return new UserDataExtractorImpl(dataSourceContexts);
     }
 
     @Override
@@ -58,7 +60,7 @@ public class UserDataExtractorImpl implements DataExtractor<User> {
 
             log.info("tenant: {}, query: {}", tenant, query);
 
-            return jdbcTemplate.query(query, rowMapper);
+            return jdbcTemplate.query(query, rowMapper());
         }
 
         return findAll();
@@ -66,7 +68,7 @@ public class UserDataExtractorImpl implements DataExtractor<User> {
 
     @Override
     public List<User> findAll() {
-        return this.jdbcTemplate.query(selectAll, this.rowMapper);
+        return this.jdbcTemplate.query(selectAll, rowMapper());
     }
 
     @Override
@@ -94,11 +96,7 @@ public class UserDataExtractorImpl implements DataExtractor<User> {
         return this.rowMapper;
     }
 
-    public static DataExtractor<User> create(@NonNull DataSourcesSettings.DataSourceProperties dataSourceProperties) {
-        return new UserDataExtractorImpl(dataSourceProperties);
-    }
-
-    private RowMapper<User> buildRowMapper(Map<String, String> mapping) {
+    private static RowMapper<User> buildRowMapper(@NonNull Map<String, String> mapping) {
         return (rs, i) -> User.builder()
                 .id(rs.getString(mapping.get("id")))
                 .username(rs.getString(mapping.get("username")))
