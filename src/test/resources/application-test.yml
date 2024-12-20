@@ -1,6 +1,7 @@
 app:
   data-sources:
     - name: db1
+      strategy: postgres
       url: jdbc:tc:postgresql:16:///${app.data-sources[0].name}
       user: test
       password: test
@@ -12,7 +13,10 @@ app:
         surname: last_name
       migration:
         enabled: true
+      health:
+        test-query: 'SELECT 1'
     - name: db2
+      strategy: postgres
       url: jdbc:tc:postgresql:16:///${app.data-sources[1].name}
       user: test
       password: test
@@ -24,3 +28,5 @@ app:
         surname: surname
       migration:
         enabled: true
+      health:
+        test-query: 'SELECT 1'
