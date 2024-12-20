@@ -20,7 +20,8 @@ public record DataSourcesSettings(List<DataSourceProperties> dataSources) {
                                        @NotNull @NotBlank String table,
                                        @NotNull Map<String, String> mapping,
                                        HealthProperties health,
-                                       MigrationProperties migration) {
+                                       MigrationProperties migration,
+                                       List<Map<String, Map<String,String>>> tables) {
     }
 
     //    public record MappingProperties(String id, String username, String name, String surname) {
