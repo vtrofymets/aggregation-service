@@ -13,15 +13,14 @@ import java.util.Map;
 public record DataSourcesSettings(List<DataSourceProperties> dataSources) {
 
     public record DataSourceProperties(@NotNull @NotBlank String name,
-                                       @NotNull @NotBlank String strategy,
+                                       @NotNull @NotBlank Strategy strategy,
                                        @NotNull @NotBlank String url,
                                        @NotNull @NotBlank String user,
                                        @NotNull @NotBlank String password,
                                        @NotNull @NotBlank String table,
                                        @NotNull Map<String, String> mapping,
                                        HealthProperties health,
-                                       MigrationProperties migration,
-                                       List<Map<String, Map<String,String>>> tables) {
+                                       MigrationProperties migration) {
     }
 
     //    public record MappingProperties(String id, String username, String name, String surname) {

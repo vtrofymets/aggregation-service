@@ -19,14 +19,13 @@ public record DataSourceContext(String tenant,
                                 DataSource dataSource,
                                 String table,
                                 Map<String, String> mapping,
-                                Map<String, Map<String, String>> tableMapping,
                                 Migrate migrate,
                                 HealthCheck healthCheck) {
 
     public static DataSourceContext from(DataSourcesSettings.DataSourceProperties dataSourceProperties) {
         return DataSourceContext.builder()
                 .tenant(dataSourceProperties.name())
-                .database(dataSourceProperties.strategy())
+                .database(dataSourceProperties.strategy().getValue())
                 .table(dataSourceProperties.table())
                 .dataSource(buildDataSource(dataSourceProperties))
                 .mapping(Collections.unmodifiableMap(dataSourceProperties.mapping()))

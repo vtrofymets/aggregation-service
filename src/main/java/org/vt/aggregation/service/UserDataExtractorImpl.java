@@ -1,6 +1,7 @@
 package org.vt.aggregation.service;
 
 import lombok.NonNull;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -9,6 +10,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.vt.aggregation.config.context.DataSourceContext;
 import org.vt.aggregation.domain.User;
 
+import java.sql.ResultSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -103,6 +105,18 @@ public class UserDataExtractorImpl implements DataExtractor<User> {
                 .name(rs.getString(mapping.get("name")))
                 .surname(rs.getString(mapping.get("surname")))
                 .build();
+    }
+
+    @SneakyThrows
+    private static String getString(ResultSet rs, String field) {
+        return rs.getString(field);
+    }
+
+    private static RowMapper<Map<String, String>> map(@NonNull Map<String, String> mapping) {
+        return (rs, i) -> mapping.entrySet()
+                .stream()
+                .map(entry -> Map.entry(entry.getKey(), getString(rs, entry.getValue())))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
 }

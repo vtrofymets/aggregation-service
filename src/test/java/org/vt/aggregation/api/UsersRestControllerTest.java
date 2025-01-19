@@ -38,7 +38,7 @@ class UsersRestControllerTest {
         Mockito.when(usersAggregationService.findUsers(Mockito.any()))
                 .thenReturn(expected);
 
-        var contentAsString = mockMvc.perform(MockMvcRequestBuilders.get("/users"))
+        var contentAsString = mockMvc.perform(MockMvcRequestBuilders.get("/v1/users"))
                 .andExpect(status().is2xxSuccessful())
                 .andReturn()
                 .getResponse()

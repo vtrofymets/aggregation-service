@@ -6,7 +6,7 @@ info:
 tags:
   - name: users
 paths:
-  /users:
+  /v1/users:
     get:
       description: Retrieve all available users.
       tags:
