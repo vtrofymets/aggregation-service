@@ -3,6 +3,7 @@ package org.vt.aggregation.v2;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -24,8 +25,11 @@ public class ContextProperties {
     @NotNull
     @Valid
     private final List<Connection> connections;
-    private final Map<String, List<EntityDetails>> entities;
+    private final Map<Group, List<EntityDefinitions>> domains;
 
+    @Validated
+    public record Group(@NotNull @NotBlank @Pattern(regexp = "^[a-z][a-z0-9]*$") String groupName) {
+    }
 
     @Validated
     @RequiredArgsConstructor
@@ -34,6 +38,7 @@ public class ContextProperties {
     public static class Connection {
         @NotNull
         @NotBlank
+        @Pattern(regexp = "^[a-zA-Z][a-zA-Z0-9_-]*$")
         private final String name;
         @NotNull
         private final Strategy strategy;
@@ -48,21 +53,18 @@ public class ContextProperties {
         private final Postgres postgres;
         private final MongoDb mongoDb;
         private final ElasticSearch elasticSearch;
-
     }
-
 
     @Validated
     @RequiredArgsConstructor
     @Getter
-    public static class EntityDetails {
-        //        private final Class<?> responseDto;
+    public static class EntityDefinitions {
         @NotNull
         @NotBlank
         private final String connectionName;
         @NotNull
         @NotBlank
-        private final String table;
+        private final String entity;
         @NotNull
         private final Map<String, String> mapping;
         private final DataSourcesSettings.MigrationProperties migration;
@@ -78,7 +80,7 @@ public class ContextProperties {
     public static class MongoDb implements StrategyDefinition {
         @Override
         public Strategy strategy() {
-            return Strategy.MONGO_DB;
+            return Strategy.MONGO;
         }
     }
 

@@ -3,8 +3,8 @@ package org.vt.aggregation.utils;
 import com.zaxxer.hikari.HikariDataSource;
 import lombok.experimental.UtilityClass;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.vt.aggregation.v2.ContextProperties;
 import org.vt.aggregation.config.database.DataSourcesSettings;
+import org.vt.aggregation.v2.ContextProperties;
 
 import javax.sql.DataSource;
 

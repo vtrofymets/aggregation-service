@@ -13,30 +13,36 @@ paths:
         - users
       operationId: receiveUsers
       parameters:
-        - in: query
-          name: id
-          schema:
-            type: string
-          required: false
-          description: Get users by id.
-        - in: query
-          name: username
-          schema:
-            type: string
-          required: false
-          description: Get users by username.
-        - in: query
-          name: name
-          schema:
-            type: string
-          required: false
-          description: Get users by name.
-        - in: query
-          name: surname
-          schema:
-            type: string
-          required: false
-          description: Get users by surname.
+        - $ref: '#/components/parameters/id'
+        - $ref: '#/components/parameters/username'
+        - $ref: '#/components/parameters/name'
+        - $ref: '#/components/parameters/surname'
+      responses:
+        '200':
+          description: List of users.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserResponseDto'
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+  /v2/users:
+    get:
+      description: Retrieve all available users.
+      tags:
+        - users
+      operationId: receiveUsers2
+      parameters:
+        - $ref: '#/components/parameters/id'
+        - $ref: '#/components/parameters/username'
+        - $ref: '#/components/parameters/name'
+        - $ref: '#/components/parameters/surname'
       responses:
         '200':
           description: List of users.
@@ -53,7 +59,35 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponseDto'
 components:
+  parameters:
+    id:
+      name: id
+      in: query
+      schema:
+        type: string
+      description: 'Unique user identifier per tenant.'
+    username:
+      name: username
+      in: query
+      schema:
+        type: string
+      description: 'User username.'
+    name:
+      name: name
+      in: query
+      schema:
+        type: string
+      description: 'User name.'
+    surname:
+      name: surname
+      in: query
+      schema:
+        type: string
+      description: 'User surname.'
   schemas:
+    UsersParameters:
+      type: object
+
     UserResponseDto:
       type: object
       properties:

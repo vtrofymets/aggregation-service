@@ -64,7 +64,7 @@ public class ConnectionFactory {
 
         @Override
         public Strategy strategy() {
-            return Strategy.MONGO_DB;
+            return Strategy.MONGO;
         }
 
         @Override

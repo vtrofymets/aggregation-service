@@ -107,16 +107,4 @@ public class UserDataExtractorImpl implements DataExtractor<User> {
                 .build();
     }
 
-    @SneakyThrows
-    private static String getString(ResultSet rs, String field) {
-        return rs.getString(field);
-    }
-
-    private static RowMapper<Map<String, String>> map(@NonNull Map<String, String> mapping) {
-        return (rs, i) -> mapping.entrySet()
-                .stream()
-                .map(entry -> Map.entry(entry.getKey(), getString(rs, entry.getValue())))
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-    }
-
 }
