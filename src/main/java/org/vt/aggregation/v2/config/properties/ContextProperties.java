@@ -1,10 +1,9 @@
-package org.vt.aggregation.v2;
+package org.vt.aggregation.v2.config.properties;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -28,12 +27,11 @@ public class ContextProperties {
     private final Map<Group, List<EntityDefinitions>> domains;
 
     @Validated
-    public record Group(@NotNull @NotBlank @Pattern(regexp = "^[a-z][a-z0-9]*$") String groupName) {
+    public record Group(@NotNull @NotBlank @Pattern(regexp = "^[a-z][a-z0-9]*$") String group) {
     }
 
     @Validated
     @RequiredArgsConstructor
-    @Builder
     @Getter
     public static class Connection {
         @NotNull
@@ -47,7 +45,9 @@ public class ContextProperties {
         private final String url;
         private final String username;
         private final String password;
+
         private final DataSourcesSettings.HealthProperties health;
+
         private final Properties properties;
 
         private final Postgres postgres;
@@ -67,7 +67,13 @@ public class ContextProperties {
         private final String entity;
         @NotNull
         private final Map<String, String> mapping;
+        private final Map<String, Object> mapping2;
         private final DataSourcesSettings.MigrationProperties migration;
+    }
+
+
+    interface StrategyDefinition {
+        Strategy strategy();
     }
 
     public static class Postgres implements StrategyDefinition {
@@ -80,7 +86,7 @@ public class ContextProperties {
     public static class MongoDb implements StrategyDefinition {
         @Override
         public Strategy strategy() {
-            return Strategy.MONGO;
+            return Strategy.MONGO_DB;
         }
     }
 
@@ -91,11 +97,4 @@ public class ContextProperties {
         }
     }
 
-    public static abstract class DataSourceDefinition implements StrategyDefinition {
-
-    }
-
-    public interface StrategyDefinition {
-        Strategy strategy();
-    }
 }

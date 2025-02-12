@@ -64,6 +64,10 @@ context:
           username: login
           name: first_name
           surname: last_name
+        mapping2:
+          id: user_id
+          person:
+            id: id
         migration:
           enabled: true
           location:

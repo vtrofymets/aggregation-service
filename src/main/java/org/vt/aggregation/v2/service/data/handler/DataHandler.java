@@ -1,4 +1,4 @@
-package org.vt.aggregation.v2.data.handlers;
+package org.vt.aggregation.v2.service.data.handler;
 
 import lombok.NonNull;
 

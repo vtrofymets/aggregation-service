@@ -2,9 +2,9 @@ package org.vt.aggregation.config.database;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import lombok.Getter;
-import org.vt.aggregation.v2.data.clients.ElasticSearchClient;
-import org.vt.aggregation.v2.data.clients.MongoDbClient;
-import org.vt.aggregation.v2.data.clients.PostgresClient;
+import org.vt.aggregation.v2.service.client.ElasticSearchClient;
+import org.vt.aggregation.v2.service.client.MongoDbClient;
+import org.vt.aggregation.v2.service.client.PostgresClient;
 
 @Getter
 public enum Strategy {
@@ -12,7 +12,7 @@ public enum Strategy {
     POSTGRES("postgres", PostgresClient.class),
     MYSQL("mysql"),
     REDIS("redis"),
-    MONGO("mongodb", MongoDbClient.class),
+    MONGO_DB("mongodb", MongoDbClient.class),
     ELASTICSEARCH("elasticsearch", ElasticSearchClient.class);
 
     private final String value;

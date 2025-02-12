@@ -19,7 +19,7 @@ class DebugRestControllerTest extends AbstractIntegrationTest {
     private MockMvc mockMvc;
 
     @Test
-    public void debug() throws Exception {
+    public void debugGet() throws Exception {
         String contentAsString = mockMvc.perform(MockMvcRequestBuilders.get("/debug/{group}", "users"))
                 .andExpect(status().isOk())
                 .andReturn()

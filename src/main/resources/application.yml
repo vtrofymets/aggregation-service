@@ -37,6 +37,8 @@ management:
     git:
       mode: simple
 
+
+
 app:
   data-sources:
     - name: db1
@@ -110,6 +112,7 @@ context:
       password: ${DB3_PASSWORD}
   domains:
     users:
+#      schema,fields: id,username,name,surname
       - connection-name: db1
         entity: users
         mapping:
@@ -117,6 +120,10 @@ context:
           username: login
           name: first_name
           surname: last_name
+#        mapping2:
+#          id: user_id
+#          person:
+#            id: id
         migration:
           enabled: true
           location:

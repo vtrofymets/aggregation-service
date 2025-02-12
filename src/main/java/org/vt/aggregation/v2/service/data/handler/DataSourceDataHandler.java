@@ -1,12 +1,12 @@
-package org.vt.aggregation.v2.data.handlers;
+package org.vt.aggregation.v2.service.data.handler;
 
 import lombok.NonNull;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-import org.vt.aggregation.v2.ContextProperties;
-import org.vt.aggregation.v2.data.clients.ClientStrategy;
+import org.vt.aggregation.v2.config.properties.ContextProperties;
+import org.vt.aggregation.v2.service.client.ClientStrategy;
 
 import java.sql.ResultSet;
 import java.util.List;
@@ -30,7 +30,7 @@ public class DataSourceDataHandler extends AbstractDataHandler {
 
     @Override
     public List<Map<String, String>> findAll() {
-        log.info("findAll for: {}", metadata());
+        log.info("Extract data for: {}", metadata());
         return jdbcTemplate.query(selectAll, this.rowMapper);
     }
 

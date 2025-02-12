@@ -1,6 +1,6 @@
-package org.vt.aggregation.v2.data.handlers;
+package org.vt.aggregation.v2.service.data.handler;
 
-import org.vt.aggregation.v2.ContextProperties;
+import org.vt.aggregation.v2.config.properties.ContextProperties;
 
 import java.util.Map;
 

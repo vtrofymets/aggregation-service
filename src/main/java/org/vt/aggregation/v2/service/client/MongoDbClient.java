@@ -1,16 +1,15 @@
-package org.vt.aggregation.v2.data.clients;
+package org.vt.aggregation.v2.service.client;
 
-import com.mongodb.ConnectionString;
-import com.mongodb.MongoClientSettings;
-import com.mongodb.MongoCredential;
 import com.mongodb.client.MongoClients;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.actuate.data.mongo.MongoHealthIndicator;
 import org.springframework.boot.actuate.health.HealthIndicator;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.vt.aggregation.v2.ContextProperties;
+import org.vt.aggregation.v2.config.properties.ContextProperties;
 
 import java.util.Objects;
 
+@Slf4j
 public class MongoDbClient extends AbstractClientStrategy<MongoTemplate> {
 
     private final MongoTemplate mongoTemplate;
@@ -22,15 +21,14 @@ public class MongoDbClient extends AbstractClientStrategy<MongoTemplate> {
         var username = Objects.requireNonNull(connection.getUsername(), "Mongo username is required!");
         var password = Objects.requireNonNull(connection.getPassword(), "Mongo password is required!");
 
-        var credential = MongoCredential.createCredential(username, connection.getName(), password.toCharArray());
 
-        var connectionString = new ConnectionString(connection.getUrl());
-        var mongoClientSettings = MongoClientSettings.builder()
-                .applyConnectionString(connectionString)
-                .credential(credential)
-                .build();
+        String[] split = connection.getUrl().split("mongodb://", 2);
 
-        var mongoClient = MongoClients.create(mongoClientSettings);
+        var connectionUrl = "mongodb://" + username + ":" + password + "@" + split[split.length - 1] + "?authSource=admin";
+
+                log.debug("Mongo connection url: {}", connectionUrl);
+
+        var mongoClient = MongoClients.create(connectionUrl);
 
         this.mongoTemplate = new MongoTemplate(mongoClient, connection.getName());
         this.healthIndicator = new MongoHealthIndicator(mongoTemplate);

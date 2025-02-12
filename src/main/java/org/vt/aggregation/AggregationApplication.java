@@ -7,7 +7,8 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 
-@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class, FlywayAutoConfiguration.class, MongoAutoConfiguration.class})
+@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class, FlywayAutoConfiguration.class,
+                                  MongoAutoConfiguration.class})
 @ConfigurationPropertiesScan
 public class AggregationApplication {
 

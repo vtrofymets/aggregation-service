@@ -1,4 +1,4 @@
-package org.vt.aggregation.v2.data.clients;
+package org.vt.aggregation.v2.service.client;
 
 import org.springframework.boot.actuate.health.HealthIndicator;
 import org.vt.aggregation.config.database.Strategy;

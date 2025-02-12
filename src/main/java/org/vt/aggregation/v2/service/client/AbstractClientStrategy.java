@@ -1,7 +1,7 @@
-package org.vt.aggregation.v2.data.clients;
+package org.vt.aggregation.v2.service.client;
 
 import org.vt.aggregation.config.database.Strategy;
-import org.vt.aggregation.v2.ContextProperties;
+import org.vt.aggregation.v2.config.properties.ContextProperties;
 
 public abstract class AbstractClientStrategy<T> implements ClientStrategy<T> {
 

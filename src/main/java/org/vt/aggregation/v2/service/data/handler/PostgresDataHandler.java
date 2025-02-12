@@ -1,10 +1,10 @@
-package org.vt.aggregation.v2.data.handlers;
+package org.vt.aggregation.v2.service.data.handler;
 
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
-import org.vt.aggregation.v2.ContextProperties;
-import org.vt.aggregation.v2.data.clients.ClientStrategy;
-import org.vt.aggregation.v2.data.clients.PostgresClient;
+import org.vt.aggregation.v2.config.properties.ContextProperties;
+import org.vt.aggregation.v2.service.client.ClientStrategy;
+import org.vt.aggregation.v2.service.client.PostgresClient;
 
 @Slf4j
 public class PostgresDataHandler extends DataSourceDataHandler {

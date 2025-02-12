@@ -1,4 +1,4 @@
-package org.vt.aggregation.v2.config;
+package org.vt.aggregation.v2.config.bean.registry;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -11,8 +11,8 @@ import org.springframework.beans.factory.support.GenericBeanDefinition;
 import org.springframework.boot.context.properties.bind.Bindable;
 import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.core.env.Environment;
-import org.vt.aggregation.v2.ContextProperties;
-import org.vt.aggregation.v2.data.clients.ClientStrategy;
+import org.vt.aggregation.v2.config.properties.ContextProperties;
+import org.vt.aggregation.v2.service.client.ClientStrategy;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,7 +21,7 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 @Slf4j
-public class ClientsBeanDefinitionRegistry implements BeanDefinitionRegistryPostProcessor {
+public class AggregationContextBeanDefinitionRegistry implements BeanDefinitionRegistryPostProcessor {
 
     private static final Pattern NON_ALPHA_DIGIT_PATTERN =  Pattern.compile("[^a-zA-Z0-9]");
 
@@ -32,7 +32,7 @@ public class ClientsBeanDefinitionRegistry implements BeanDefinitionRegistryPost
     private final Map<String, String> clientBeanNames;
     private final List<String> dataHandlerBeanNames;
 
-    public ClientsBeanDefinitionRegistry(Environment environment) {
+    public AggregationContextBeanDefinitionRegistry(Environment environment) {
         Binder binder = Binder.get(environment);
         this.contextProperties = binder.bind("context", Bindable.of(ContextProperties.class)).get();
         this.clientBeanNames = new HashMap<>();
@@ -70,7 +70,6 @@ public class ClientsBeanDefinitionRegistry implements BeanDefinitionRegistryPost
 
     @Override
     public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
-        log.info("Create beans");
 
         if (contextProperties.getDomains() == null) {
             return;
@@ -90,7 +89,7 @@ public class ClientsBeanDefinitionRegistry implements BeanDefinitionRegistryPost
 
                 var clientStrategyBean = beanFactory.getBean(clientBeanName, ClientStrategy.class);
 
-                var dataHandlerProcess = DataHandlerProcessFactory.getDataHandlerProcess(group, clientStrategyBean, entityDefinition);
+                var dataHandlerProcess = DataHandlerProcessFactory.createDataHandler(group, clientStrategyBean, entityDefinition);
 
                 var strategyName = StringUtils.capitalize(clientStrategyBean.strategy().getValue());
                 var entityName = StringUtils.capitalize(NON_ALPHA_DIGIT_PATTERN.matcher(entityDefinition.getEntity()).replaceAll(StringUtils.EMPTY));
@@ -107,7 +106,6 @@ public class ClientsBeanDefinitionRegistry implements BeanDefinitionRegistryPost
         }
 
         log.info("Registered data handler beans: {}", dataHandlerBeanNames);
-
     }
 
 }

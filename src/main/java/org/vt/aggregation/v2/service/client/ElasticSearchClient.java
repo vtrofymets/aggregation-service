@@ -1,9 +1,9 @@
-package org.vt.aggregation.v2.data.clients;
+package org.vt.aggregation.v2.service.client;
 
 import org.elasticsearch.client.RestClient;
 import org.springframework.boot.actuate.elasticsearch.ElasticsearchRestClientHealthIndicator;
 import org.springframework.boot.actuate.health.HealthIndicator;
-import org.vt.aggregation.v2.ContextProperties;
+import org.vt.aggregation.v2.config.properties.ContextProperties;
 
 public class ElasticSearchClient extends AbstractClientStrategy<RestClient> {
 

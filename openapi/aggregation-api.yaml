@@ -39,19 +39,16 @@ paths:
         - users
       operationId: receiveUsers2
       parameters:
-        - $ref: '#/components/parameters/id'
-        - $ref: '#/components/parameters/username'
-        - $ref: '#/components/parameters/name'
-        - $ref: '#/components/parameters/surname'
+        - $ref: '#/components/parameters/params'
+        - $ref: '#/components/parameters/mapping'
+        - $ref: '#/components/parameters/mappings'
       responses:
         '200':
           description: List of users.
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/UserResponseDto'
+                $ref: '#/components/schemas/PaginationResponseDto'
         '500':
           description: Internal Server Error.
           content:
@@ -84,10 +81,68 @@ components:
       schema:
         type: string
       description: 'User surname.'
+    offset:
+      name: offset
+      in: query
+      schema:
+        type: integer
+        default: 0
+      description: 'Skip n elements.'
+    limit:
+      name: limit
+      in: query
+      schema:
+        type: integer
+        default: 20
+      description: 'Size of elements for each connection.'
+    params:
+      name: params
+      in: query
+      schema:
+        type: object
+        properties:
+          id:
+            type: string
+          name:
+            type: string
+          username:
+            type: string
+    mapping:
+      name: mapping
+      in: query
+      schema:
+        type: object
+        additionalProperties:
+          type: string
+    mappings:
+      name: mappings
+      in: query
+      schema:
+        type: object
+        additionalProperties:
+          type: array
+          items:
+            type: string
   schemas:
-    UsersParameters:
+    PaginationResponseDto:
       type: object
-
+      properties:
+        data:
+          type: array
+          items:
+            oneOf:
+              - $ref: '#/components/schemas/UserResponseDto'
+        pagination:
+          type: object
+          properties:
+            offset:
+              type: integer
+            limit:
+              type: integer
+            sort_by:
+              type: string
+            sort_order:
+              type: string
     UserResponseDto:
       type: object
       properties:
