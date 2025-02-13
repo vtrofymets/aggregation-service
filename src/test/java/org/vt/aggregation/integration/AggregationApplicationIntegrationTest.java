@@ -23,7 +23,7 @@ public class AggregationApplicationIntegrationTest extends AbstractIntegrationTe
     @Test
     void findUsersWithOutParameters_expectedResponseWithSize6() throws Exception {
 
-        var contentAsString = mockMvc.perform(MockMvcRequestBuilders.get("/users"))
+        var contentAsString = mockMvc.perform(MockMvcRequestBuilders.get("/v1/users"))
                 .andExpect(status().is2xxSuccessful())
                 .andReturn()
                 .getResponse()
@@ -40,7 +40,7 @@ public class AggregationApplicationIntegrationTest extends AbstractIntegrationTe
 
     @Test
     void getUsersWithQueryParamUsername_expectedUserResponseDto_withSize2() throws Exception {
-        var contentAsString = mockMvc.perform(MockMvcRequestBuilders.get("/users?username=login1"))
+        var contentAsString = mockMvc.perform(MockMvcRequestBuilders.get("/v1/users?username=login1"))
                 .andExpect(status().is2xxSuccessful())
                 .andReturn()
                 .getResponse()
@@ -58,7 +58,7 @@ public class AggregationApplicationIntegrationTest extends AbstractIntegrationTe
 
     @Test
     void getUsersWithQueryParamName_expectedUserResponseDto_withSize1() throws Exception {
-        var contentAsString = mockMvc.perform(MockMvcRequestBuilders.get("/users?name=first_name1"))
+        var contentAsString = mockMvc.perform(MockMvcRequestBuilders.get("/v1/users?name=first_name1"))
                 .andExpect(status().is2xxSuccessful())
                 .andReturn()
                 .getResponse()

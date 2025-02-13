@@ -6,8 +6,8 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.vt.aggregation.api.dto.UserResponseDto;
@@ -26,7 +26,7 @@ class UsersRestControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
-    @MockBean
+    @MockitoBean
     private UsersAggregationService usersAggregationService;
     @Autowired
     private ObjectMapper objectMapper;
@@ -38,7 +38,7 @@ class UsersRestControllerTest {
         Mockito.when(usersAggregationService.findUsers(Mockito.any()))
                 .thenReturn(expected);
 
-        var contentAsString = mockMvc.perform(MockMvcRequestBuilders.get("/users"))
+        var contentAsString = mockMvc.perform(MockMvcRequestBuilders.get("/v1/users"))
                 .andExpect(status().is2xxSuccessful())
                 .andReturn()
                 .getResponse()

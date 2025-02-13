@@ -16,8 +16,11 @@ public class FlywayConfiguration {
 
     private final AggregationContext aggregationContext;
 
+//    private final List<ClientStrategy<?>> clients;
+
     @PostConstruct
     public void init() {
+        //need to add healthcheck, and check with db is UP then use migrate
         aggregationContext.dataSourcesContexts()
                 .stream()
                 .filter(dataSourceProperties -> Optional.ofNullable(dataSourceProperties.migrate())

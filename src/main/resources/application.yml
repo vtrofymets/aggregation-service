@@ -37,6 +37,8 @@ management:
     git:
       mode: simple
 
+
+
 app:
   data-sources:
     - name: db1
@@ -80,3 +82,87 @@ app:
         username: email
         name: first_name
         surname: last_name
+
+# Definition
+context:
+  connections:
+    - name: db1
+      strategy: POSTGRES
+      url: jdbc:postgresql://db1/db1
+      username: postgres
+      password: postgres
+      health:
+        test-query: 'SELECT 1'
+      properties:
+        name: name
+        name2: name2
+      migration:
+        enabled: true
+    - name: db2
+      strategy: POSTGRES
+      url: jdbc:postgresql://db2/db2
+      username: postgres
+      password: postgres
+      migration:
+        enabled: true
+    - name: db3
+      strategy: POSTGRES
+      url: jdbc:postgresql://db3/db3
+      username: ${DB3_USER}
+      password: ${DB3_PASSWORD}
+  domains:
+    users:
+#      schema,fields: id,username,name,surname
+      - connection-name: db1
+        entity: users
+        mapping:
+          id: user_id
+          username: login
+          name: first_name
+          surname: last_name
+#        mapping2:
+#          id: user_id
+#          person:
+#            id: id
+        migration:
+          enabled: true
+          location:
+      - connection-name: db2
+        entity: user_table
+        mapping:
+          id: login
+          username: login
+          name: name
+          surname: surname
+      - connection-name: db3
+        entity: customers
+        mapping:
+          id: id
+          username: email
+          name: first_name
+          surname: last_name
+    goods:
+      - connection-name: db1
+        entity: goods
+        mapping:
+          id: id
+          name: name
+          price: price
+          quantity: quantity
+          description: description
+#      - connection-name: db3
+#        entity: items
+#        mapping:
+#          id: id
+#          name: name
+#          price: price
+#          quantity: quantity
+#          description: summary
+  error-audit:
+    strategy: POSTGRES
+    url: jdbc:postgresql://error-audit/error-audit
+    username: postgres
+    password: postgres
+    # migration must init automatically for strategy SQL/ELASTIC to find by text in request
+    health:
+      test-query: 'SELECT 1'

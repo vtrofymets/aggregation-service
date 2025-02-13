@@ -13,7 +13,7 @@ import java.util.Map;
 public record DataSourcesSettings(List<DataSourceProperties> dataSources) {
 
     public record DataSourceProperties(@NotNull @NotBlank String name,
-                                       @NotNull @NotBlank String strategy,
+                                       @NotNull @NotBlank Strategy strategy,
                                        @NotNull @NotBlank String url,
                                        @NotNull @NotBlank String user,
                                        @NotNull @NotBlank String password,

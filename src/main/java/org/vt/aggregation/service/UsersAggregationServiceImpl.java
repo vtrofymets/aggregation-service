@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.vt.aggregation.domain.User;
-import org.vt.aggregation.providers.ParametersConverterProvider;
+import org.vt.aggregation.providers.ObjectMapperProvider;
 
 import java.util.Collection;
 import java.util.List;
@@ -23,7 +23,7 @@ import static java.util.concurrent.CompletableFuture.supplyAsync;
 public class UsersAggregationServiceImpl implements UsersAggregationService {
 
     private final List<DataExtractor<User>> userDataExtractors;
-    private final ParametersConverterProvider parametersConverterProvider;
+    private final ObjectMapperProvider objectMapperProvider;
 
     @Override
     public List<User> findUsers(UsersFilterParams params) {
@@ -37,7 +37,7 @@ public class UsersAggregationServiceImpl implements UsersAggregationService {
     }
 
     private List<User> findUsersWithParams(UsersFilterParams params) {
-        var parameters = parametersConverterProvider.convert(params);
+        var parameters = objectMapperProvider.convertToMap(params);
         return receiveUsers(extractor -> supplyAsync(() -> extractor.findWithParams(parameters)));
     }
 

@@ -30,3 +30,68 @@ app:
         enabled: true
       health:
         test-query: 'SELECT 1'
+
+
+# Definition
+context:
+  connections:
+    - name: db1
+      strategy: POSTGRES
+      url: jdbc:tc:postgresql:16:///db1
+      username: postgres
+      password: postgres
+      health:
+        test-query: 'SELECT 1'
+      properties:
+        name: name
+        name2: name2
+      migration:
+        enabled: true
+    - name: db2
+      strategy: POSTGRES
+      url: jdbc:tc:postgresql:16:///db2
+      username: postgres
+      password: postgres
+      migration:
+        enabled: true
+  domains:
+    users:
+      #        response-dto: org.vt.aggregation.api.dto.UserResponseDto
+      - connection-name: db1
+        entity: users
+        mapping:
+          id: user_id
+          username: login
+          name: first_name
+          surname: last_name
+        mapping2:
+          id: user_id
+          person:
+            id: id
+        migration:
+          enabled: true
+          location:
+      - connection-name: db2
+        entity: user_table
+        mapping:
+          id: id
+          username: login
+          name: name
+          surname: surname
+    goods:
+      - connection-name: db1
+        entity: goods
+        mapping:
+          id: id
+          name: name
+          price: price
+          quantity: quantity
+          description: description
+#      - connection-name: db3
+#        entity: items
+#        mapping:
+#          id: id
+#          name: name
+#          price: price
+#          quantity: quantity
+#          description: summary

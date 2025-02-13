@@ -4,6 +4,9 @@ import com.zaxxer.hikari.HikariDataSource;
 import lombok.experimental.UtilityClass;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.vt.aggregation.config.database.DataSourcesSettings;
+import org.vt.aggregation.v2.config.properties.ContextProperties;
+
+import javax.sql.DataSource;
 
 @UtilityClass
 public class JdbcTemplateUtils {
@@ -16,5 +19,25 @@ public class JdbcTemplateUtils {
         hikariDataSource.setPassword(dataSourceProperties.password());
 
         return new JdbcTemplate(hikariDataSource);
+    }
+
+    public static JdbcTemplate buildJdbcTemplate(ContextProperties.Connection connection) {
+        var hikariDataSource = new HikariDataSource();
+        hikariDataSource.setPoolName(connection.getName() + "_pool");
+        hikariDataSource.setJdbcUrl(connection.getUrl());
+        hikariDataSource.setUsername(connection.getUsername());
+        hikariDataSource.setPassword(connection.getPassword());
+
+        return new JdbcTemplate(hikariDataSource);
+    }
+
+    public static DataSource buildDataSource(ContextProperties.Connection connection) {
+        var hikariDataSource = new HikariDataSource();
+        hikariDataSource.setPoolName(connection.getName() + "_pool");
+        hikariDataSource.setJdbcUrl(connection.getUrl());
+        hikariDataSource.setUsername(connection.getUsername());
+        hikariDataSource.setPassword(connection.getPassword());
+
+        return hikariDataSource;
     }
 }
